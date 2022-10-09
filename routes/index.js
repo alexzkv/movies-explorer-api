@@ -1,13 +1,12 @@
-const express = require('express');
-
-const router = express.Router();
+const router = require('express').Router();
 
 const { celebrate, Joi } = require('celebrate');
 
 const userRouter = require('./users');
 const movieRouter = require('./movies');
-
-const { signIn, signUp } = require('../controllers/users');
+const auth = require('../middlewares/auth');
+const { signUp, signIn } = require('../controllers/users');
+const NotFoundError = require('../errors/NotFoundError');
 
 router.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -24,7 +23,11 @@ router.post('/signin', celebrate({
   }),
 }), signIn);
 
-router.use('/users', userRouter);
-router.use('/movies', movieRouter);
+router.use('/users', auth, userRouter);
+router.use('/movies', auth, movieRouter);
+
+router.use('*', (req, res, next) => {
+  next(new NotFoundError('Страница не найдена'));
+});
 
 module.exports = router;
