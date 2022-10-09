@@ -1,0 +1,31 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "Бэкенд проекта про документальные фильмы",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "dev:inspect": "nodemon --inspect app.js",
+    "lint": "npx eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexzkv/movies-explorer-api.git"
+  },
+  "author": "alexzkv",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexzkv/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/alexzkv/movies-explorer-api#readme",
+  "dependencies": {
+    "node": "^18.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.25.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.20"
+  }
+}
