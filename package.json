@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/alexzkv/movies-explorer-api#readme",
   "dependencies": {
-    "node": "^18.10.0"
+    "mongoose": "^6.6.5",
+    "node": "^18.10.0",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "eslint": "^8.25.0",
