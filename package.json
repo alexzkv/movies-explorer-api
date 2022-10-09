@@ -21,7 +21,9 @@
   "homepage": "https://github.com/alexzkv/movies-explorer-api#readme",
   "dependencies": {
     "celebrate": "^15.0.1",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.5",
     "node": "^18.10.0",
     "validator": "^13.7.0"
