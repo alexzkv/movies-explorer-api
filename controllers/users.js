@@ -23,7 +23,7 @@ const signUp = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы некорректные данные'));
+        return next(new BadRequestError('Введены некорректные данные'));
       }
       if (err.code === 11000) {
         return next(new ConflictRequestError('Пользователь с таким email уже зарегестрирован'));
@@ -76,7 +76,7 @@ const getUserInfo = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequestError('Переданы некорректные данные'));
+        return next(new NotFoundError('Пользователь не найден'));
       }
       return next(err);
     });
@@ -96,7 +96,7 @@ const updateUserInfo = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return next(new BadRequestError('Переданы некорректные данные'));
+        return next(new BadRequestError('Введены некорректные данные'));
       }
       return next(err);
     });
@@ -104,7 +104,7 @@ const updateUserInfo = (req, res, next) => {
 
 const logout = (req, res) => {
   res.clearCookie('jwt').send({
-    message: 'Сookies are cleared',
+    message: 'Пользователь вышел',
   });
 };
 
