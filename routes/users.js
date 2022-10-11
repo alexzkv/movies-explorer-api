@@ -4,6 +4,7 @@ const { celebrate, Joi } = require('celebrate');
 const {
   updateUserInfo,
   getUserInfo,
+  logout,
 } = require('../controllers/users');
 
 userRouter.get('/users/me', getUserInfo);
@@ -14,5 +15,7 @@ userRouter.patch('/users/me', celebrate({
     name: Joi.string().required().min(2).max(30),
   }),
 }), updateUserInfo);
+
+userRouter.delete('/logout', logout);
 
 module.exports = userRouter;
