@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { PORT, DATA_BASE } = require('./utils/config');
+const { PORT, MONGO_URL } = require('./utils/config');
 
 const app = express();
 
@@ -32,7 +32,7 @@ app.use(errors());
 app.use(errorHandler);
 
 async function main() {
-  await mongoose.connect(DATA_BASE, {
+  await mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: false,
   });

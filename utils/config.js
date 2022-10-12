@@ -3,8 +3,9 @@ require('dotenv').config();
 const {
   NODE_ENV,
   PORT = 3000,
-  DATA_BASE = 'mongodb://localhost:27017/moviesdb',
+  MONGO_URL = 'mongodb://localhost:27017/moviesdb',
   JWT_SECRET,
+  SALT_ROUNDS = '10',
 } = process.env;
 
 const messages = {
@@ -19,8 +20,9 @@ const messages = {
 
 module.exports = {
   NODE_ENV,
-  PORT,
-  DATA_BASE,
   JWT_SECRET,
+  SALT_ROUNDS,
+  PORT,
+  MONGO_URL,
   messages,
 };
