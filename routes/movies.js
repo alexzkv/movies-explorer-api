@@ -9,9 +9,9 @@ const {
 
 const { regex } = require('../utils/regex');
 
-movieRouter.get('/movies', getMovies);
+movieRouter.get('/', getMovies);
 
-movieRouter.post('/movies', celebrate({
+movieRouter.post('/', celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
@@ -27,9 +27,9 @@ movieRouter.post('/movies', celebrate({
   }),
 }), createMovie);
 
-movieRouter.delete('/movies/_id', celebrate({
+movieRouter.delete('/:_id', celebrate({
   params: Joi.object().keys({
-    movieId: Joi.number().required(),
+    _id: Joi.number().required(),
   }),
 }), deleteMovie);
 

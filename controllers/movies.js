@@ -5,7 +5,6 @@ const NotFoundError = require('../errors/NotFoundError');
 
 const getMovies = (req, res, next) => {
   Movie.find({})
-    .populate('owner')
     .then((movies) => res.send({ data: movies }))
     .catch(next);
 };
@@ -39,7 +38,6 @@ const createMovie = (req, res, next) => {
     nameEN,
     owner: req.user._id,
   })
-    .then((movie) => Movie.populate(movie, { path: 'owner' }))
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -50,9 +48,9 @@ const createMovie = (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  Movie.deleteOne(req.params.movieId)
-    .then(() => {
-      res.send({ data: Movie });
+  Movie.deleteOne({ movieId: req.params._id })
+    .then((movie) => {
+      res.send({ data: movie });
     })
     .catch((err) => {
       if (err.name === 'CastError') {

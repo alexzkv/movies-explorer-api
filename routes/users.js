@@ -7,9 +7,9 @@ const {
   logout,
 } = require('../controllers/users');
 
-userRouter.get('/users/me', getUserInfo);
+userRouter.get('/me', getUserInfo);
 
-userRouter.patch('/users/me', celebrate({
+userRouter.patch('/me', celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     name: Joi.string().required().min(2).max(30),
