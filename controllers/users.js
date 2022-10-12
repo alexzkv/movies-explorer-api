@@ -1,15 +1,14 @@
-require('dotenv').config();
-
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+
 const AuthError = require('../errors/AuthError');
 const BadRequestError = require('../errors/BadRequestError');
 const ConflictRequestError = require('../errors/ConflictRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { NODE_ENV, JWT_SECRET, messages } = require('../utils/config');
 
 const signUp = (req, res, next) => {
   const {
@@ -23,10 +22,10 @@ const signUp = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Введены некорректные данные'));
+        return next(new BadRequestError(messages.incorrectData));
       }
       if (err.code === 11000) {
-        return next(new ConflictRequestError('Пользователь с таким email уже зарегестрирован'));
+        return next(new ConflictRequestError(messages.emailAlreadyRegistered));
       }
       return next(err);
     });
@@ -39,13 +38,13 @@ const signIn = (req, res, next) => {
     .select('+password')
     .then((user) => {
       if (!user) {
-        throw new AuthError('Неправильные почта или пароль');
+        throw new AuthError(messages.incorrectCredentials);
       }
 
       bcrypt.compare(password, user.password)
         .then((isUserValid) => {
           if (!isUserValid) {
-            throw new AuthError('Неправильные почта или пароль');
+            throw new AuthError(messages.incorrectCredentials);
           }
 
           const token = jwt.sign(
@@ -70,13 +69,13 @@ const getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(messages.userNotFound);
       }
       return res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new NotFoundError('Пользователь не найден'));
+        return next(new NotFoundError(messages.userNotFound));
       }
       return next(err);
     });
@@ -91,13 +90,13 @@ const updateUserInfo = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(messages.userNotFound);
       }
       return res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return next(new BadRequestError('Введены некорректные данные'));
+        return next(new BadRequestError(messages.incorrectData));
       }
       return next(err);
     });

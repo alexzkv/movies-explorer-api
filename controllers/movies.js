@@ -3,6 +3,8 @@ const Movie = require('../models/movie');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 
+const { messages } = require('../utils/config');
+
 const getMovies = (req, res, next) => {
   Movie.find({})
     .then((movies) => res.send({ data: movies }))
@@ -41,7 +43,7 @@ const createMovie = (req, res, next) => {
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Введены некорректные данные'));
+        return next(new BadRequestError(messages.incorrectData));
       }
       return next(err);
     });
@@ -54,7 +56,7 @@ const deleteMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new NotFoundError('Фильм не найден'));
+        return next(new NotFoundError(messages.movieNotFound));
       }
       return next(err);
     });
