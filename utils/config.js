@@ -5,7 +5,6 @@ const {
   PORT = 3000,
   MONGO_URL = 'mongodb://localhost:27017/moviesdb',
   JWT_SECRET,
-  SALT_ROUNDS = 10,
 } = process.env;
 
 const messages = {
@@ -21,7 +20,6 @@ const messages = {
 module.exports = {
   NODE_ENV,
   JWT_SECRET,
-  SALT_ROUNDS,
   PORT,
   MONGO_URL,
   messages,

@@ -9,7 +9,7 @@ const ConflictRequestError = require('../errors/ConflictRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 
 const {
-  NODE_ENV, JWT_SECRET, SALT_ROUNDS, messages,
+  NODE_ENV, JWT_SECRET, messages,
 } = require('../utils/config');
 
 const signUp = (req, res, next) => {
@@ -17,7 +17,7 @@ const signUp = (req, res, next) => {
     email, password, name,
   } = req.body;
 
-  bcrypt.hash(password, SALT_ROUNDS)
+  bcrypt.hash(password, 10)
     .then((hash) => User.create({
       email, password: hash, name,
     }))
