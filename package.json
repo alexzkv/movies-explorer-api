@@ -18,6 +18,7 @@
   "bugs": {
     "url": "https://github.com/alexzkv/movies-explorer-api/issues"
   },
+  "homepage": "https://github.com/alexzkv/movies-explorer-api#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "celebrate": "^15.0.1",

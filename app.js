@@ -17,6 +17,8 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
+      'https://bestmovie.nomoredomains.icu',
+      'http://bestmovie.nomoredomains.icu',
       'http://localhost:3000',
     ],
     credentials: true,
