@@ -6,6 +6,7 @@ const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 
 const routes = require('./routes');
+const limit = require('./middlewares/rateLimiter');
 const errorHandler = require('./middlewares/error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { PORT, MONGO_URL } = require('./utils/config');
@@ -28,6 +29,7 @@ app.use(
 app.use(requestLogger);
 app.use(cookieParser());
 app.use(helmet());
+app.use(limit);
 app.use(routes);
 app.use(errorLogger);
 app.use(errors());

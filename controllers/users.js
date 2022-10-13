@@ -104,7 +104,7 @@ const updateUserInfo = (req, res, next) => {
     });
 };
 
-const logout = (req, res) => {
+const signout = (req, res) => {
   res.clearCookie('jwt').send({
     message: 'Пользователь вышел',
   });
@@ -115,5 +115,5 @@ module.exports = {
   signIn,
   getUserInfo,
   updateUserInfo,
-  logout,
+  signout,
 };
