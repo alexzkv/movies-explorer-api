@@ -75,12 +75,7 @@ const getUserInfo = (req, res, next) => {
       }
       return res.send({ data: user });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return next(new NotFoundError(messages.userNotFound));
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 const updateUserInfo = (req, res, next) => {
