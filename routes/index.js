@@ -16,6 +16,7 @@ const {
 router.post('/signup', validateSignUp, signUp);
 router.post('/signin', validateSignIn, signIn);
 
+router.use('/', auth);
 router.use('/users', auth, userRouter);
 router.use('/movies', auth, movieRouter);
 
