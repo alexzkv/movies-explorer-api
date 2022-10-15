@@ -1,7 +1,9 @@
+// const mongoose = require('mongoose');
 const Movie = require('../models/movie');
 
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 const { messages } = require('../utils/config');
 
@@ -43,23 +45,32 @@ const createMovie = (req, res, next) => {
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError(messages.incorrectData));
+        throw new BadRequestError(messages.incorrectData);
       }
-      return next(err);
+      next(err);
     });
 };
 
 const deleteMovie = (req, res, next) => {
-  Movie.deleteOne({ movieId: req.params._id })
+  const owner = req.user._id;
+  const { movieId } = req.params;
+
+  Movie.findById(movieId)
     .then((movie) => {
-      res.send({ data: movie });
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return next(new NotFoundError(messages.movieNotFound));
+      if (!movie) {
+        next(new NotFoundError(messages.movieNotFound));
       }
-      return next(err);
-    });
+      if (movie.owner.toString() !== owner) {
+        throw new ForbiddenError(messages.forbiddenDelete);
+      } else {
+        Movie.findByIdAndDelete(movieId)
+          .then((deletedMovie) => {
+            res.send({ data: deletedMovie });
+          })
+          .catch(next);
+      }
+    })
+    .catch(next);
 };
 
 module.exports = {

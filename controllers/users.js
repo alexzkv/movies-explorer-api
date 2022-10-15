@@ -24,12 +24,12 @@ const signUp = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError(messages.incorrectData));
+        next(new BadRequestError(messages.incorrectData));
+      } if (err.code === 11000) {
+        next(new ConflictRequestError(messages.emailAlreadyRegistered));
+      } else {
+        next(err);
       }
-      if (err.code === 11000) {
-        return next(new ConflictRequestError(messages.emailAlreadyRegistered));
-      }
-      return next(err);
     });
 };
 
@@ -92,10 +92,13 @@ const updateUserInfo = (req, res, next) => {
       return res.send({ data: user });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        return next(new BadRequestError(messages.incorrectData));
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError(messages.incorrectData));
+      } if (err.code === 11000) {
+        next(new ConflictRequestError(messages.emailAlreadyRegistered));
+      } else {
+        next(err);
       }
-      return next(err);
     });
 };
 

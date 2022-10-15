@@ -18,6 +18,7 @@ const messages = {
   correctEmail: 'Введите корректный email',
   correctLink: 'Введите корректную ссылку',
   errorOnServer: 'Произошла ошибка на сервере',
+  forbiddenDelete: 'Нельзя удалить чужой фильм',
 };
 
 module.exports = {
