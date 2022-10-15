@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const { regex } = require('../utils/regex');
 
+const regex = require('../utils/regex');
 const { messages } = require('../utils/config');
 
 const movieSchema = new mongoose.Schema({
