@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { regex } = require('../utils/regex');
 
+const { messages } = require('../utils/config');
+
 const movieSchema = new mongoose.Schema({
   country: {
     type: String,
@@ -27,7 +29,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => regex.url.test(v),
-      message: 'Введите корректную ссылку',
+      message: messages.correctLink,
     },
   },
   trailerLink: {
@@ -35,7 +37,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => regex.url.test(v),
-      message: 'Введите корректную ссылку',
+      message: messages.correctLink,
     },
   },
   thumbnail: {
@@ -43,7 +45,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => regex.url.test(v),
-      message: 'Введите корректную ссылку',
+      message: messages.correctLink,
     },
   },
   owner: {

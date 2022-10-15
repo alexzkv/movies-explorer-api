@@ -15,6 +15,9 @@ const messages = {
   userNotFound: 'Пользователь не найден',
   pageNotFound: 'Страница не найдена',
   authorizationError: 'Ошибка авторизации',
+  correctEmail: 'Введите корректный email',
+  correctLink: 'Введите корректную ссылку',
+  errorOnServer: 'Произошла ошибка на сервере',
 };
 
 module.exports = {

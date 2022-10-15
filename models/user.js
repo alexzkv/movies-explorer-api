@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
+const { messages } = require('../utils/config');
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -8,7 +10,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: (v) => validator.isEmail(v),
-      message: 'Введите корректный email',
+      message: messages.correctEmail,
     },
   },
   password: {
