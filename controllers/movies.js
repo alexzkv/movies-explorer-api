@@ -1,4 +1,3 @@
-// const mongoose = require('mongoose');
 const Movie = require('../models/movie');
 
 const BadRequestError = require('../errors/BadRequestError');
@@ -8,40 +7,17 @@ const ForbiddenError = require('../errors/ForbiddenError');
 const { messages } = require('../utils/config');
 
 const getMovies = (req, res, next) => {
-  Movie.find({})
+  Movie.find({ owner: req.user._id })
+    .populate('owner')
     .then((movies) => res.send({ data: movies }))
     .catch(next);
 };
 
 const createMovie = (req, res, next) => {
-  const {
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-    nameRU,
-    nameEN,
-  } = req.body;
+  const owner = req.user._id;
 
-  Movie.create({
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-    nameRU,
-    nameEN,
-    owner: req.user._id,
-  })
+  Movie.create({ owner, ...req.body })
+    .then((movie) => Movie.populate(movie, { path: 'owner' }))
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -52,25 +28,30 @@ const createMovie = (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  const owner = req.user._id;
-  const { movieId } = req.params;
-
-  Movie.findById(movieId)
+  Movie.findById(req.params._id)
     .then((movie) => {
       if (!movie) {
-        next(new NotFoundError(messages.movieNotFound));
+        throw new NotFoundError(messages.movieNotFound);
       }
-      if (movie.owner.toString() !== owner) {
+
+      if (movie.owner._id.toString() !== req.user._id) {
         throw new ForbiddenError(messages.forbiddenDelete);
-      } else {
-        Movie.findByIdAndDelete(movieId)
-          .then((deletedMovie) => {
-            res.send({ data: deletedMovie });
-          })
-          .catch(next);
       }
+      Movie.findByIdAndDelete(req.params._id)
+        .then((deletedMovie) => res.send({ data: deletedMovie }))
+        .catch((err) => {
+          if (err.name === 'CastError') {
+            next(new BadRequestError(messages.incorrectData));
+          }
+          next(err);
+        });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError(messages.incorrectData));
+      }
+      next(err);
+    });
 };
 
 module.exports = {
