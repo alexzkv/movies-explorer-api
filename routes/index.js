@@ -1,8 +1,5 @@
 const router = require('express').Router();
 
-const userRouter = require('./users');
-const movieRouter = require('./movies');
-
 const NotFoundError = require('../errors/NotFoundError');
 
 const { signUp, signIn } = require('../controllers/users');
@@ -16,9 +13,9 @@ const {
 router.post('/signup', validateSignUp, signUp);
 router.post('/signin', validateSignIn, signIn);
 
-router.use('/', auth);
-router.use('/users', auth, userRouter);
-router.use('/movies', auth, movieRouter);
+router.use(auth);
+router.use('/users', require('./users'));
+router.use('/movies', require('./movies'));
 
 router.use('*', (req, res, next) => {
   next(new NotFoundError(messages.pageNotFound));
