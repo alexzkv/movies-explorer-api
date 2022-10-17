@@ -35,13 +35,13 @@ const validateCreateMovie = celebrate({
 
 const validateDeleteMovie = celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().required(),
+    _id: Joi.string().required().hex().length(24),
   }),
 });
 
 const validateUpdate = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().email().required(),
+    email: Joi.string().required().email(),
     name: Joi.string().required().min(2).max(30),
   }),
 });
