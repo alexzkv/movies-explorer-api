@@ -37,14 +37,8 @@ const deleteMovie = (req, res, next) => {
       if (movie.owner._id.toString() !== req.user._id) {
         throw new ForbiddenError(messages.forbiddenDelete);
       }
-      Movie.findByIdAndDelete(req.params._id)
-        .then((deletedMovie) => res.send({ data: deletedMovie }))
-        .catch((err) => {
-          if (err.name === 'CastError') {
-            next(new BadRequestError(messages.incorrectData));
-          }
-          next(err);
-        });
+      return Movie.findByIdAndDelete(req.params._id)
+        .then((deletedMovie) => res.send({ data: deletedMovie }));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
